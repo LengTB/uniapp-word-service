@@ -1,10 +1,11 @@
 package top.tobycold.wordservice.service;
 
-import top.tobycold.wordservice.dto.WordDTO;
 import top.tobycold.wordservice.entity.WordEntity;
 
 import java.util.List;
+import java.util.Set;
 
 public interface WordService {
-    List<WordEntity> getByGroup(WordDTO wordDTO);
+    void initStudyWord();
+    Set<WordEntity> getGroupWord();
 }

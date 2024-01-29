@@ -1,8 +1,10 @@
 package top.tobycold.wordservice.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
+@TableName("word")
 public class WordEntity {
     // 分类
     private String initial;

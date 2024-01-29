@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class WordDTO {
-    private int count;
-    private int group;
+    //单词
+    private String word;
+    //单词释义
+    private String mean;
+
 }
