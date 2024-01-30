@@ -16,10 +16,7 @@ public class SqlTests {
     WordMapper wordMapper;
     @Test
     public void  selectTest(){
-//        QueryWrapper<WordEntity> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("word", "abandon");
-//        WordEntity wordEntity = wordMapper.selectOne(queryWrapper);
-//        System.out.println(wordEntity.toString());
+
 
         LambdaQueryWrapper<WordEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         List<WordEntity> wordEntities = wordMapper.selectList(lambdaQueryWrapper);

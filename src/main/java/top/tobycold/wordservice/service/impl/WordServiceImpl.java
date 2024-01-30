@@ -36,13 +36,13 @@ public class WordServiceImpl implements WordService {
 
     /**
      * 复习模式返回时间集
-     *
+     * <p>
      * 艾宾浩斯记忆遗忘曲线记忆法
-     *  1 2 4 7 15 这个天周期来进行
-     *
-     *  示例：
-     *      用户返回一个单词，在确定学习提交接口中，定义学习次数 studyCount, this studyCount = 1
-     *      提交接口中要有提交用户，和提交时间，还有就是防止用户刷单词程度，必须校验提交时间是否为该学习时间，否出提交失败
+     * 1 2 4 7 15 这个天周期来进行
+     * <p>
+     * 示例：
+     * 用户返回一个单词，在确定学习提交接口中，定义学习次数 studyCount, this studyCount = 1
+     * 提交接口中要有提交用户，和提交时间，还有就是防止用户刷单词程度，必须校验提交时间是否为该学习时间，否出提交失败
      */
     @Autowired
     WordMapper wordMapper;
@@ -73,26 +73,44 @@ public class WordServiceImpl implements WordService {
         });
     }
 
+    /**
+     * 获得一组单词
+     * 示例：20个
+     *
+     * @return
+     */
     public Set<WordEntity> getGroupWord() {
         //学习的单词缓存
         SetOperations setOperations = redisTemplate.opsForSet();
+
         Long size = setOperations.size(BaseValues.getID());
         if (size > 0) {
             return setOperations.members(BaseValues.getID());
         }
         //如果没有值就只能去数据库中取值
-
-        return null;
+        LambdaQueryWrapper<StudyWordEntity> studyWordEntityLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        List<StudyWordEntity> studyWordEntities = studyWordMapper.selectList(studyWordEntityLambdaQueryWrapper);
+        setOperations.add(BaseValues.getID(), studyWordEntities);
+        return setOperations.members(BaseValues.getID());
     }
-    //提交单词接口
-    public boolean pushWord(@RequestBody WordDTO wordDTO){
+
+    /**
+     * 学习单词方法
+     *
+     * @param word
+     * @return
+     */
+    public boolean pushWord(String word) {
         SetOperations setOperations = redisTemplate.opsForSet();
-        //查找学习缓存中是否有该单词
-        if (setOperations.isMember(BaseValues.getID(), wordDTO.getWord())) {
-           return false;
-        }
-        //添加单词到缓存中
-        setOperations.add(BaseValues.getID(), wordDTO.getWord());
-        return true;
+        Set<StudyWordEntity> members = setOperations.members(BaseValues.getID());
+        members.forEach(studyWordEntity -> {
+            if (studyWordEntity.equals(word)) {
+                //如果单词已经存在，那么就将学习次数加一
+                if (studyWordEntity.getCount() < 3) {
+                    studyWordEntity.setCount(studyWordEntity.getCount() + 1);
+                }
+            }
+        });
+        return false;
     }
 }
