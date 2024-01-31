@@ -54,6 +54,10 @@ public class WordServiceImpl implements WordService {
     StudyWordMapper studyWordMapper;
 
     //初始化学习接口，将需要学习的单词转移到study_word表中
+
+    /**
+     * 这里不考虑数据量问题
+     */
     public void initStudyWord() {
         //查询学习的用户
         QueryWrapper<UserEntity> user = new QueryWrapper<>();
@@ -79,8 +83,9 @@ public class WordServiceImpl implements WordService {
      *
      * @return
      */
-    public Set<WordEntity> getGroupWord() {
+    public Set<StudyWordEntity> getGroupWord() {
         //学习的单词缓存
+        //用用户id作为key，用StudyWordEntity作为value
         SetOperations setOperations = redisTemplate.opsForSet();
 
         Long size = setOperations.size(BaseValues.getID());

@@ -9,4 +9,7 @@ public class BaseValues {
     public static void setID(String id){
         threadLocal.set(id);
     }
+    public static void clearID(){
+        threadLocal.remove();
+    }
 }

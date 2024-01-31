@@ -2,13 +2,13 @@ package top.tobycold.wordservice.interceptors;
 
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import top.tobycold.wordservice.common.BaseValues;
 
 @Controller
 public class AllInterceptor implements HandlerInterceptor {
@@ -30,6 +30,7 @@ public class AllInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+        //清理缓存
+        BaseValues.clearID();
     }
 }
