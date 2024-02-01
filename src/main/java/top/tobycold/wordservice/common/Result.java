@@ -29,9 +29,9 @@ public class Result<T> {
         return new Result<>(1, "success", t);
     }
     public static <T>Result<T> error() {
-        return new Result<>(0, "success", null);
+        return new Result<>(0, "error", null);
     }
     public static <T>Result<T> error(T t) {
-        return new Result<>(0, "success", t);
+        return new Result<>(0, "error", t);
     }
 }

@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+/src/main/resources/test.yml
+/src/test/java/top/tobycold/wordservice/HttpClientTest.java
 
 ### NetBeans ###
 /nbproject/private/
