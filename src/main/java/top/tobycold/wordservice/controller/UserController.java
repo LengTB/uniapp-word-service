@@ -1,6 +1,6 @@
 package top.tobycold.wordservice.controller;
 
-import cn.hutool.json.JSON;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -14,7 +14,6 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import top.tobycold.wordservice.common.Result;
 import top.tobycold.wordservice.dto.UserDTO;
@@ -64,15 +63,15 @@ public class UserController {
                 try {
                     JSONObject responseEntity = JSONUtil.parseObj(responseString);
                     Object openid = responseEntity.get("openid");
-                    /*
-                        Object session_key = responseEntity.get("session_key");//这里先保留不做使用，因为本人还没有应用场景
+                    /**
+                     *  Object session_key = responseEntity.get("session_key");//这里先保留不做使用，因为本人还没有应用场景
                     */
-//                    UserEntity userEntity = userMapper.selectOne(new LambdaQueryWrapper<UserEntity>().eq(UserEntity::getOpenid, openid));
-//                    try {
-//                        Assert.notNull(userEntity, "这是一个新用户");
-//                    }catch (Exception e){
-//                        userMapper.insert(new UserEntity( userDTO.getInfo(), (String) openid, 0));
-//                    }
+                    UserEntity userEntity = userMapper.selectOne(new LambdaQueryWrapper<UserEntity>().eq(UserEntity::getOpenid, openid));
+                    try {
+                        Assert.notNull(userEntity, "这是一个新用户");
+                    }catch (Exception e){
+                        userMapper.insert(new UserEntity( userDTO.getInfo(), (String) openid, 0));
+                    }
                     log.info("openid: {}", openid);
                 }catch (Exception e){
                     log.error("login接口这里出错了，请排查JSON转换这里是否出了问题！");

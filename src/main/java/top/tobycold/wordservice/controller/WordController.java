@@ -22,11 +22,6 @@ public class WordController {
      */
     @Autowired
     WordService wordService;
-    @GetMapping("init")
-    public Result<String> initWord(){
-        wordService.initStudyWord();
-        return Result.success();
-    }
     @GetMapping("word")
     public Result<?> getGroupWord(){
         wordService.getGroupWord();
